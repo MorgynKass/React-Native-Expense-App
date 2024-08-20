@@ -5,7 +5,7 @@ function renderExpenseItem({ item }) {
   return (
     <ExpenseItem
       description={item.description}
-      date={item.data}
+      date={item.date}
       amount={item.amount}
     />
   );
