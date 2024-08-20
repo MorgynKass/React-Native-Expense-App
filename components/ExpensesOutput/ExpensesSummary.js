@@ -1,5 +1,6 @@
-import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
+
+import { GlobalStyles } from "../../constants/styles";
 
 function ExpensesSummary({ intervalName, expenses }) {
   const expensesSum = expenses.reduce((sum, expense) => {
@@ -7,11 +8,31 @@ function ExpensesSummary({ intervalName, expenses }) {
   }, 0);
 
   return (
-    <View>
-      <Text>{intervalName}</Text>
-      <Text>${expensesSum.toFixed(2)}</Text>
+    <View style={styles.container}>
+      <Text style={styles.intervalText}>{intervalName}</Text>
+      <Text style={styles.sumText}>${expensesSum.toFixed(2)}</Text>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 8,
+    backgroundColor: GlobalStyles.colors.lightBeige,
+    borderRadius: 6,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  intervalText: {
+    fontSize: 12,
+    color: GlobalStyles.colors.blue,
+  },
+  sumText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: GlobalStyles.colors.darkBlue,
+  },
+});
 
 export default ExpensesSummary;
