@@ -53,8 +53,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    padding: 24,
-    backgroundColor: GlobalStyles.colors.beige,
+    paddingHorizontal: 24,
+    paddingTop: 24,
+    paddingBottom: 0,
+    backgroundColor: GlobalStyles.colors.lightBeige,
   },
 });
 
