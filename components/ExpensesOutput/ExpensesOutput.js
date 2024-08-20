@@ -43,7 +43,7 @@ function ExpensesOutput({ expenses, expenseInterval }) {
         expenses={DUMMY_EXPENSES}
         intervalName={expenseInterval}
       />
-      <ExpensesList />
+      <ExpensesList expenses={DUMMY_EXPENSES} />
     </View>
   );
 }
