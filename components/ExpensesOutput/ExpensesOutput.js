@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     paddingHorizontal: 24,
-    paddingTop: 24,
+    paddingTop: 20,
     paddingBottom: 0,
     backgroundColor: GlobalStyles.colors.lightBeige,
   },

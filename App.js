@@ -65,7 +65,7 @@ export default function App() {
     <>
       <StatusBar style="light" />
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerBackTitle: "Back" }}>
+        <Stack.Navigator screenOptions={{ presentation: "modal" }}>
           <Stack.Screen
             name="ExpenseOverview"
             component={ExpensesOverview}

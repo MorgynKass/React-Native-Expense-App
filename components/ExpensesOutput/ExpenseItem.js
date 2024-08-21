@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   amountContainer: {
     paddingHorizontal: 12,
     paddingVertical: 4,
-    backgroundColor: "white",
+    backgroundColor: GlobalStyles.colors.lightBeige,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 4,

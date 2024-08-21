@@ -17,7 +17,7 @@ function ExpensesSummary({ intervalName, expenses }) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 8,
+    padding: 13,
     backgroundColor: GlobalStyles.colors.darkBlue,
     borderRadius: 6,
     flexDirection: "row",
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   },
   intervalText: {
     fontSize: 15,
-    color: GlobalStyles.colors.blue,
+    color: "white",
   },
   sumText: {
     fontSize: 16,
