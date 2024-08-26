@@ -3,7 +3,6 @@ import { useContext, useEffect } from "react";
 
 import IconButton from "../components/ui/IconButton";
 import { GlobalStyles } from "../constants/styles";
-import Button from "../components/ui/Button";
 import { ExpensesContext } from "../store/expenses-context";
 import ExpenseForm from "../components/ManageExpense/ExpenseForm";
 
@@ -11,6 +10,10 @@ function ManageExpenses({ route, navigation }) {
   const expensesCtx = useContext(ExpensesContext);
   const id = route.params?.expenseId;
   const isEditing = !!id;
+
+  const selectedExpense = expensesCtx.expenses.find(
+    (expense) => expense.id === id
+  );
 
   useEffect(() => {
     navigation.setOptions({
@@ -27,34 +30,24 @@ function ManageExpenses({ route, navigation }) {
     navigation.goBack();
   }
 
-  function confirmHandler() {
+  function confirmHandler(expenseData) {
     if (isEditing) {
-      expensesCtx.updateExpense(id, {
-        description: "Updated Test",
-        amount: 88,
-        date: new Date("2024-08-18"),
-      });
+      expensesCtx.updateExpense(id, expenseData);
     } else {
-      expensesCtx.addExpense({
-        description: "Added Test",
-        amount: 99,
-        date: new Date("2024-08-18"),
-      });
+      expensesCtx.addExpense(expenseData);
     }
     navigation.goBack();
   }
 
   return (
     <View style={styles.container}>
-      <ExpenseForm />
-      <View style={styles.buttonContainer}>
-        <Button mode={"flat"} onPress={cancelHandler} style={styles.button}>
-          Cancel
-        </Button>
-        <Button onPress={confirmHandler} style={styles.button}>
-          {isEditing ? "Update" : "Add"}
-        </Button>
-      </View>
+      <ExpenseForm
+        onCancel={cancelHandler}
+        editing={isEditing}
+        onSubmit={confirmHandler}
+        previousValues={selectedExpense}
+      />
+
       {isEditing && (
         <View style={styles.deleteContainer}>
           <IconButton
@@ -75,16 +68,7 @@ const styles = StyleSheet.create({
     padding: 24,
     backgroundColor: GlobalStyles.colors.lightBeige,
   },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  button: {
-    minWidth: 120,
-    marginHorizontal: 8,
-    marginVertical: 10,
-  },
+
   deleteContainer: {
     marginTop: 16,
     paddingTop: 8,
