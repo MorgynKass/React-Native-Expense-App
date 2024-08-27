@@ -1,34 +1,84 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { useState } from "react";
 
 import Input from "./Input";
 import Button from "../ui/Button";
 
 function ExpenseForm({ onCancel, editing, onSubmit, previousValues }) {
-  const [inputValues, setInputValues] = useState({
-    amount: previousValues ? previousValues.amount.toString() : "",
-    date: previousValues ? previousValues.date.toISOString().slice(0, 10) : "",
-    description: previousValues ? previousValues.description : "",
+  const [inputs, setInputs] = useState({
+    amount: {
+      value: previousValues ? previousValues.amount.toString() : "",
+      isValid: true,
+    },
+    date: {
+      value: previousValues
+        ? previousValues.date.toISOString().slice(0, 10)
+        : "",
+      isValid: true,
+    },
+    description: {
+      value: previousValues ? previousValues.description : "",
+      isValid: true,
+    },
   });
 
   function inputHandler(inputId, enteredValue) {
-    setInputValues((currentValues) => {
+    setInputs((currentInputs) => {
       return {
-        ...currentValues,
-        [inputId]: enteredValue,
+        ...currentInputs,
+        [inputId]: { value: enteredValue, isValid: true },
       };
     });
   }
 
   function submitHandler() {
     const expenseData = {
-      amount: +inputValues.amount,
-      date: new Date(inputValues.date),
-      description: inputValues.description,
+      amount: +inputs.amount.value,
+      date: new Date(inputs.date.value),
+      description: inputs.description.value,
     };
+
+    console.log(expenseData);
+
+    const amountIsValid = expenseData.amount > 0 && !isNaN(expenseData.amount);
+    const dateIsValid =
+      !isNaN(expenseData.date) &&
+      expenseData.date.toString() !== "Invalid Date";
+    const descriptionIsValid = expenseData.description.trim().length > 0;
+
+    console.log(
+      `amountIsValid: ${amountIsValid}, dateIsValid: ${dateIsValid}, descriptionIsValid: ${descriptionIsValid}`
+    );
+
+    if (!amountIsValid || !dateIsValid || !descriptionIsValid) {
+      setInputs((currentInputs) => {
+        return {
+          amount: { value: currentInputs.amount.value, isValid: amountIsValid },
+          date: { value: currentInputs.date.value, isValid: dateIsValid },
+          description: {
+            value: currentInputs.description.value,
+            isValid: descriptionIsValid,
+          },
+        };
+      });
+      return;
+    }
 
     onSubmit(expenseData);
   }
+
+  console.log(
+    inputs.amount.isValid,
+    inputs.date.isValid,
+    inputs.description.isValid
+  );
+
+  const fromIsInvalid =
+    !inputs.amount.isValid ||
+    !inputs.date.isValid ||
+    !inputs.description.isValid;
+
+  console.log(`FormIsInvalid: ${fromIsInvalid}`);
 
   return (
     <View>
@@ -38,7 +88,7 @@ function ExpenseForm({ onCancel, editing, onSubmit, previousValues }) {
           keyboardType: "decimal-pad",
           placeholder: "$0.00",
           onChangeText: inputHandler.bind(this, "amount"),
-          value: inputValues.amount,
+          value: inputs.amount.value,
         }}
       />
       <Input
@@ -47,7 +97,7 @@ function ExpenseForm({ onCancel, editing, onSubmit, previousValues }) {
           placeholder: "YYYY-MM-DD",
           maxLength: 10,
           onChangeText: inputHandler.bind(this, "date"),
-          value: inputValues.date,
+          value: inputs.date.value,
         }}
       />
       <Input
@@ -55,9 +105,12 @@ function ExpenseForm({ onCancel, editing, onSubmit, previousValues }) {
         textInputConfig={{
           multiline: true,
           onChangeText: inputHandler.bind(this, "description"),
-          value: inputValues.description,
+          value: inputs.description.value,
         }}
       />
+      {fromIsInvalid && (
+        <Text>Invalid input. Please check your input values.</Text>
+      )}
       <View style={styles.buttonContainer}>
         <Button mode={"flat"} onPress={onCancel} style={styles.button}>
           Cancel

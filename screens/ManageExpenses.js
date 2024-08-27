@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { useContext, useEffect } from "react";
 
 import IconButton from "../components/ui/IconButton";
